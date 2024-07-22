@@ -31,6 +31,6 @@ public class AddPostUsecase implements Usecase<AddPostInputDto, AddPostOutputDto
 		aUser.addPost(aPost);
 		final var anOutput = new AddPostOutputDto(aPost.getId(), aPost.getTitle(), aPost.getContent(), aPost.getAuthor(),
 				aPost.getDate());
-		return anOutput;+
+		return anOutput;
 	}
 }
