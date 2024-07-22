@@ -33,5 +33,10 @@ public class UserRepositoryMemory implements UserGateway {
 		return List.copyOf(this.users.values());
 	}
 
+	@Override
+	public User findNickname(String nickname) {
+		return this.users.get(nickname);
+	}
+
 	
 }

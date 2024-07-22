@@ -12,10 +12,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import j.user.domain.post.gateway.PostGateway;
+import j.user.domain.user.gateway.UserGateway;
 import j.user.infra.controllers.post.dtos.add.AddPostRequestDto;
 import j.user.infra.controllers.post.dtos.add.AddPostResponseDto;
 import j.user.infra.controllers.post.dtos.find.FindPostResponseDto;
 import j.user.infra.controllers.post.dtos.list.ListPostResponseDto;
+import j.user.infra.repositories.user.memory.UserRepositoryMemory;
 import j.user.usecases.post.add.AddPostInputDto;
 import j.user.usecases.post.add.AddPostUsecase;
 import j.user.usecases.post.find.FindPostInputDto;
@@ -25,15 +27,18 @@ import j.user.usecases.post.list.ListPostUsecase;
 import j.user.usecases.user.list.PostDto;
 import j.user.utils.PostRepositoryUtils;
 
+
 @RestController
 @RequestMapping("gerencia/posts")
 public class PostController {
 
 	private PostGateway postGateway;
+	private UserGateway userGateway;
 	
 	public PostController() {
 		super();
 		this.postGateway = PostRepositoryUtils.getPostGateway();
+		this.userGateway = UserRepositoryMemory.create();
 	}
 	
     @PostMapping("/add")
@@ -45,7 +50,7 @@ public class PostController {
     			aRequest.date()
     	);
     	
-    	 final var aResult = AddPostUsecase.create(postGateway).execute(input);
+    	 final var aResult = AddPostUsecase.create(postGateway,userGateway).execute(input);
     	 final var aResponse = new AddPostResponseDto(
     			 aResult.id(),
     			 aResult.title(),
